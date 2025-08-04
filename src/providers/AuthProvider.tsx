@@ -5,7 +5,7 @@ import React from 'react'
 function Provider({children}:{children:React.ReactNode}) {
   return (
     <div>
-      {children}
+      <SessionProvider>{children}</SessionProvider>
     </div>
   )
 }
