@@ -31,7 +31,7 @@ export const Options:NextAuthOptions={
                     email:credentials?.email,
                     accessToken:hold.data.access,
                     refreshToken:hold.data.refresh,
-                    role:"admin"
+                    role:"Admin"
                   }
                 }
             }
