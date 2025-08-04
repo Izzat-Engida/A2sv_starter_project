@@ -9,13 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "next": "15.4.5",
-    "next-auth": "^4.24.11",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-hook-form": "^7.62.0"
-=======
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
@@ -25,7 +18,6 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.1"
->>>>>>> daed0c71e2c50c476ea55987503c03833fb8044d
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -36,10 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
     "tailwindcss": "^4",
-<<<<<<< HEAD
-=======
     "tw-animate-css": "^1.3.6",
->>>>>>> daed0c71e2c50c476ea55987503c03833fb8044d
     "typescript": "^5"
   }
 }
