@@ -8,6 +8,7 @@ declare module 'next-auth' {
     accessToken: string;
     refreshToken: string;
     role:string;
+    rememberme?:boolean;
   }
 
   interface User {
@@ -17,6 +18,7 @@ declare module 'next-auth' {
     accessToken: string;
     refreshToken: string;
     role:string;
+    rememberme?:boolean;
   }
 }
 
@@ -26,6 +28,7 @@ declare module 'next-auth/jwt' {
     refreshToken: string;
     accessTokenExpires?: number;
     role:string;
+    rememberme?:boolean;
   }
 }
 

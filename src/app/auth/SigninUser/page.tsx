@@ -1,6 +1,6 @@
 'use client'
 import { User } from '@/types/globaltype'
-import React from 'react'
+import React,{useState} from 'react'
 import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { Input } from '@/components/ui/input'
@@ -11,6 +11,7 @@ import path from '../../../../public/images/logo-blue.svg fill.svg'
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>()
   const { errors } = formState
+  const [RememberMe,SetRememberMe]=useState(false)
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -25,12 +26,17 @@ function SigninUser() {
           <span className="cursor-pointer">Back to Home</span> | <span className="cursor-pointer">Create a new applicant account</span>
         </div>
         <form onSubmit={handleSubmit(async (data: User) => {
-          await signIn('credentials', {
+          const res=await signIn('credentials', {
             email: data.email,
             password: data.password,
             callbackUrl: "/", // Set your callback URL here
+            rememberme: RememberMe,
             role: "user",
+            redirect:false,
           })
+          if (res?.error){
+            alert(res.error)
+          }
         })}>
           <div className="space-y-4">
             <Input type="email" placeholder="Email" {...register("email")} />
@@ -38,7 +44,7 @@ function SigninUser() {
           </div>
           <div className="flex justify-between items-center my-4 text-sm">
             <label className="flex items-center space-x-2">
-              <input type="checkbox" />
+              <input type="checkbox" onClick={(e)=>SetRememberMe(e.target.checked)} />
               <span>Remember me</span>
             </label>
             <span className="text-[#4F46E5] cursor-pointer">Forgot your password?</span>
