@@ -1,10 +1,7 @@
-// src/app/auth/signup/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans, GeistMono } from "geist/font";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-
-const inter = Inter({ subsets: ["latin"] });
+import Provider from "../providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "A2SV - Sign Up",
@@ -13,12 +10,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-gray-50`}>{children}</body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className="font-sans antialiased">
+        <Provider>{children}</Provider>
+      </body>
     </html>
   );
 }
