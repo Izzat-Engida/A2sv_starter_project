@@ -9,25 +9,27 @@ const refreshToken = async (token: any) => {
       body: JSON.stringify({ refreshToken: token.refreshToken }),
     });
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || "Failed to refresh token");
+    const hold = await res.json();
+    console.log("Refresh Token Response:", hold);
+
+    if (!res.ok || !hold.data?.success) {
+      throw new Error(hold.message || "Failed to refresh token");
     }
 
-    const hold = await res.json();
-    if (hold.data?.success && hold.data.access) {
+    if (hold.data.access) {
       return {
         ...token,
         accessToken: hold.data.access,
         refreshToken: token.refreshToken,
-        accessTokenExpires: Date.now() + 60*60*24*7*1000, 
+        accessTokenExpires: Date.now() + 60 * 60 * 24 * 7 * 1000,
+        error: null,
       };
     }
 
-    return token; 
+    return token;
   } catch (error) {
     console.error("Error refreshing token:", error);
-    return { ...token, error: "RefreshAccessTokenError" }; 
+    return { ...token, error: "RefreshAccessTokenError" };
   }
 };
 
@@ -57,52 +59,54 @@ export const Options: NextAuthOptions = {
           });
 
           const hold = await res.json();
-          if (!res.ok) {
+          console.log("Authorize Response:", hold);
+
+          if (!res.ok || !hold.success || !hold.data?.access) {
             throw new Error(hold.message || "Authentication failed");
           }
 
-          if (hold.success && hold.data?.access) {
-            return {
-              email: credentials?.email,
-              accessToken: hold.data.access,
-              refreshToken: hold.data.refresh,
-              role: credentials?.role,
-              rememberme: credentials?.rememberme === "true",
-            };
-          }
-
-          throw new Error("Invalid response from server");
+          return {
+            email: credentials?.email,
+            accessToken: hold.data.access,
+            refreshToken: hold.data.refresh || null,
+            role: credentials?.role,
+            rememberme: credentials?.rememberme === "true",
+          };
         } catch (error) {
           console.error("Authorize error:", error);
-          throw error; 
+          throw error;
         }
       },
     }),
   ],
   callbacks: {
+    async signIn({ user, credentials }) {
+      console.log("SignIn - User:", user, "Credentials:", credentials);
+      return true;
+    },
     async jwt({ token, user }) {
+      console.log("JWT - User:", user, "Token:", token);
       if (user) {
-      
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.role = user.role;
         token.rememberMe = user.rememberme;
-        token.accessTokenExpires = Date.now() + (user.rememberme ? 7 * 24 * 60 * 60 * 1000 : 60 * 60 * 1000); // 7 days or 1 hour
+        token.accessTokenExpires = Date.now() + (user.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000);
         return token;
       }
 
-      if (Date.now() < token.accessTokenExpires - 5 * 60 * 1000) {
-        return token;
+      if (token.rememberMe && Date.now() >= (token.accessTokenExpires||0) - 5 * 60 * 1000) {
+        return await refreshToken(token);
       }
 
-
-      return await refreshToken(token);
+      return token;
     },
     async session({ session, token }) {
+      console.log("Session - Token:", token, "Session:", session);
       session.role = token.role;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
-  
+      session.accessTokenExpires = token.accessTokenExpires;
       return session;
     },
   },
