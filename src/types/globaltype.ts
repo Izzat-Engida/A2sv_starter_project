@@ -44,3 +44,21 @@ export type HorizontalBar={
   interview:number,
   applied:number,
 }
+export type Cycles={
+success:boolean,
+data:{
+  cycles:Cycle[],
+  total_count:number,
+  page:number,
+  limit:number
+},
+message:string
+}
+export type Cycle={
+ id:number,
+ name:string,
+ start_date:string,
+ end_date:string,
+ is_active:boolean,
+ created_at:string
+}

@@ -2,7 +2,7 @@
 import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Import useRouter
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -23,15 +23,16 @@ function SigninAdmin() {
       password: data.password,
       role: "Admin",
       rememberme: rememberMe,
-      redirect: false, // Keep redirect false for manual control
-      callbackUrl: "/Dashboardanalytics",
+      redirect: false, 
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      // Use router.push instead of window.location.href
+    await getSession();
+    router.refresh()
+      
       router.push("/Dashboardanalytics");
     }
   };

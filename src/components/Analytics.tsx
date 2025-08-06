@@ -7,6 +7,14 @@ import UniversityPieChart from './Piechart';
 import VerticalBarGraph from './VerticalBarGraph';
 
 function Analytics() {
+  
+  const dummyData = {
+    applied: 150,
+    in_progress: 80,
+    interview: 40,
+    accepted: 10,
+  };
+
   const { data: session, status } = useSession();
   const [data, setData] = useState<Applications | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -93,20 +101,24 @@ function Analytics() {
 
   return(
     
-  <div className="p-4">
-    <div>
+  <div className="p-4 flex flex-col">
+    <div >
     <h1 className=' font-bold text-[30px]'>Application Analytics</h1>
     <p>Insights </p>
     </div>
-    <div className='flex flex-wrap gap-2'>
-      <div>
+    <div className='flex flex-wrap gap-2 pb-4'>
+      <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-10'>
         <p>Total Applicants</p>
+        <p>{data.data.total_count}</p>
       </div>
-      <div>
+      <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-1g'>
         <p>Acceptance Rate</p>
+        <p>10%</p>
+
       </div>
-      <div>
+      <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-1g'>
         <p>Average review Time</p>
+        <p>2 days</p>
       </div>
     </div>
       <div className="flex flex-col gap-4">
@@ -115,7 +127,7 @@ function Analytics() {
             <UniversityPieChart Applications={data} />
           </div>
           <div className="w-full md:w-1/2 shadow-lg rounded-lg bg-white p-4">
-            <HorizontalBarchart data={barData} />
+            <HorizontalBarchart data={dummyData} />
           </div>
         </div>
         <div className="w-full shadow-lg rounded-lg bg-white p-4">

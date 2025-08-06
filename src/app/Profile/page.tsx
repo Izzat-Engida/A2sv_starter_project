@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import background from "../../../public/images/background.svg";
@@ -31,7 +31,8 @@ type ProfileForm = {
 };
 
 function UserProfile() {
-  const { data: session, status } = useSession();
+  //await getSession();
+  const { data: session, status,update } = useSession();
   const [data, setData] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -52,6 +53,10 @@ function UserProfile() {
   } = useForm<ProfileForm>();
 
   useEffect(() => {
+    const refresh=async()=>{
+      await update();
+    };
+    refresh();
     const fetchProfile = async () => {
       if (status !== "authenticated" || !session?.accessToken) {
         setError("You must be logged in to view your profile.");

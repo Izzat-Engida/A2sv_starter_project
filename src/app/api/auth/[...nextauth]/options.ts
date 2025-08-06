@@ -79,6 +79,11 @@ export const Options: NextAuthOptions = {
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, 
+  }
+  ,
   callbacks: {
     async signIn({ user, credentials }) {
       console.log("SignIn - User:", user, "Credentials:", credentials);
