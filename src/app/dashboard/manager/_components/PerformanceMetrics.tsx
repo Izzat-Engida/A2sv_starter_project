@@ -1,27 +1,29 @@
+"use client";
+
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
 export default function PerformanceMetrics() {
   return (
-    <div className="bg-white rounded-lg shadow p-6 space-y-4">
-      <div className="space-y-2">
-        <strong className="text-gray-800">Treat Performance</strong>
-        <div className="flex justify-between">
-          <span className="text-gray-600">
-            Java R: 2.5x0xgms / Avg. 2.5 xgm
-          </span>
-          <span className="text-gray-600">12 Revisions: 8 Revisions</span>
-        </div>
-      </div>
-
-      <div className="flex justify-between">
-        <span className="text-gray-600">M&A-R: 2.5x0xgms / Avg. 2.5 xgm</span>
-        <span className="text-gray-600">8 Revisions</span>
-      </div>
-
-      <div className="space-y-2">
-        <strong className="text-gray-800">Review</strong>
+    <Card className="border-0 bg-white shadow-sm h-fit">
+      <CardHeader>
+        <CardTitle className="text-lg font-bold">Team Performance</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
         <div>
-          <span className="text-gray-600">Value Details</span>
+          <div className="flex justify-between items-center">
+            <h4 className="font-medium">Jane R.</h4>
+            <p className="text-sm text-gray-600">12 Reviews</p>
+          </div>
+          <p className="text-sm text-gray-600">3 Assigned / Avg. 2.5 days</p>
         </div>
-      </div>
-    </div>
+        <div>
+          <div className="flex justify-between items-center">
+            <h4 className="font-medium">Mike R.</h4>
+            <p className="text-sm text-gray-600">8 Reviews</p>
+          </div>
+          <p className="text-sm text-gray-600">5 Assigned / Avg. 3.1 days</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
