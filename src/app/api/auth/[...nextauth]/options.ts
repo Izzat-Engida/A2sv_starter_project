@@ -69,7 +69,7 @@ export const Options: NextAuthOptions = {
             email: credentials?.email,
             accessToken: hold.data.access,
             refreshToken: hold.data.refresh || null,
-            role: credentials?.role,
+            role: credentials?.role.toLocaleLowerCase()==='admin'? 'admin': hold.data.role,
             rememberme: credentials?.rememberme === "true",
           };
         } catch (error) {
@@ -84,11 +84,9 @@ export const Options: NextAuthOptions = {
     maxAge: 7 * 24 * 60 * 60, 
   }
   ,
+  
   callbacks: {
-    async signIn({ user, credentials }) {
-      console.log("SignIn - User:", user, "Credentials:", credentials);
-      return true;
-    },
+    
     async jwt({ token, user }) {
       console.log("JWT - User:", user, "Token:", token);
       if (user) {
@@ -107,7 +105,7 @@ export const Options: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      console.log("Session - Token:", token, "Session:", session);
+
       session.role = token.role;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;

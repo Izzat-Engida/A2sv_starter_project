@@ -2,7 +2,7 @@
 import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
@@ -29,7 +29,16 @@ function SigninUser() {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      window.location.href = "/Dashboard"; 
+      const session = await getSession();
+      if(session?.role==='applicant'){
+
+      }
+      else if(session?.role==='manager'){
+          
+      }
+      else if(session?.role==='reviewer'){
+
+      }
     }
   };
 
