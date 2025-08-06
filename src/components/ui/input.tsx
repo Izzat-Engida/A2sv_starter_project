@@ -1,6 +1,12 @@
+<<<<<<< HEAD:group66_8/src/components/ui/input.tsx
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+=======
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/input.tsx
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
@@ -15,7 +21,14 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       )}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/input.tsx
   )
 }
 
 export { Input }
+=======
+  );
+}
+
+export { Input };
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/input.tsx

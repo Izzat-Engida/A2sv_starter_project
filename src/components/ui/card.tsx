@@ -1,6 +1,12 @@
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+=======
+import * as React from "react";
+
+import { cn } from "@/lib/utils";
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -12,7 +18,11 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -25,7 +35,11 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -35,7 +49,11 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("leading-none font-semibold", className)}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
@@ -45,7 +63,11 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<"div">) {
@@ -58,7 +80,11 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -68,7 +94,11 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("px-6", className)}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -78,7 +108,11 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
       {...props}
     />
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
   )
+=======
+  );
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
 }
 
 export {
@@ -89,4 +123,8 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+<<<<<<< HEAD:group66_8/src/components/ui/card.tsx
 }
+=======
+};
+>>>>>>> feat/add-header-and-footer-components:src/components/ui/card.tsx
