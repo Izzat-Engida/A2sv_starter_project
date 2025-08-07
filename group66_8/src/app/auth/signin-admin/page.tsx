@@ -27,7 +27,7 @@ function SigninAdmin() {
       role: "Admin",
       rememberme: rememberMe,
       redirect: false, // Keep redirect false for manual control
-      callbackUrl: "/dashboard/reviewer",
+      callbackUrl: "/Dashboard",
     });
 
     if (res?.error) {
@@ -35,7 +35,7 @@ function SigninAdmin() {
       console.error("Sign-in error:", res.error);
     } else {
       // Use router.push instead of window.location.href
-      router.push("/dashboard/reviewer");
+      router.push("/Dashboard");
     }
   };
 

@@ -24,14 +24,14 @@ function SigninUser() {
       role: "user",
       rememberme: rememberMe,
       redirect: false,
-      callbackUrl: "/Dashboard",
+      callbackUrl: "/ dashboard/applicant/in-progress",
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      window.location.href = "/Dashboard";
+      window.location.href = "/dashboard/applicant/in-progress";
     }
   };
 

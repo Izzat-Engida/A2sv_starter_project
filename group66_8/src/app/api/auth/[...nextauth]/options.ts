@@ -10,7 +10,7 @@ const refreshToken = async (token: any) => {
     });
 
     const hold = await res.json();
-    // console.log("Refresh Token Response:", hold);
+    console.log("Refresh Token Response:", hold);
 
     if (!res.ok || !hold.data?.success) {
       throw new Error(hold.message || "Failed to refresh token");
@@ -59,7 +59,7 @@ export const Options: NextAuthOptions = {
           });
 
           const hold = await res.json();
-          // console.log("Authorize Response:", hold);
+          console.log("Authorize Response:", hold);
 
           if (!res.ok || !hold.success || !hold.data?.access) {
             throw new Error(hold.message || "Authentication failed");
@@ -81,7 +81,7 @@ export const Options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, credentials }) {
-      // console.log("SignIn - User:", user, "Credentials:", credentials);
+      console.log("SignIn - User:", user, "Credentials:", credentials);
       return true;
     },
     async jwt({ token, user }) {
@@ -102,7 +102,7 @@ export const Options: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // console.log("Session - Token:", token, "Session:", session);
+      console.log("Session - Token:", token, "Session:", session);
       session.role = token.role;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
