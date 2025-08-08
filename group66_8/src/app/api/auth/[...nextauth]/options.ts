@@ -27,7 +27,7 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
     });
 
     const hold = await res.json();
-    console.log("🔁 Refresh Token Response:", hold);
+    //console.log("🔁 Refresh Token Response:", hold);
 
     if (!res.ok || !hold.data?.access) {
       throw new Error(hold.message || "Failed to refresh access token");
@@ -36,11 +36,11 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
     return {
       ...token,
       accessToken: hold.data.access,
-      accessTokenExpires: Date.now() + 15 * 60 * 1000, // Always 15 minutes
+      accessTokenExpires: Date.now() + 15 * 60 * 1000
       error: undefined,
     };
   } catch (error) {
-    console.error("🔴 Error refreshing access token:", error);
+    //console.error("🔴 Error refreshing access token:", error);
     return { ...token, error: "RefreshAccessTokenError" };
   }
 };
@@ -49,7 +49,7 @@ export const Options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60, // 7 days max session (for rememberMe)
+    maxAge: 7 * 24 * 60 * 60, 
   },
 
   providers: [
