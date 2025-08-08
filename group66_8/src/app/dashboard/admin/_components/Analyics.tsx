@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -51,8 +52,8 @@ function Analytics() {
         console.log('API Response:', fetchedData);
         setData(fetchedData);
         setError(null);
-      } catch (err) {
-        console.error('Fetch error:');
+      } catch (err: any) {
+        console.error(err, 'Fetch error:');
         setError('An error occurred while fetching applications');
       }
     };

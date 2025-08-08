@@ -85,9 +85,9 @@ function UserProfile() {
           full_name: profileData.data.full_name,
           email: profileData.data.email,
         });
-      } catch (e) {
+      } catch (e: any) {
         setError("An error occurred while fetching your profile");
-        console.error("Fetch error:");
+        console.error(e, "Fetch error:");
       }
     };
 

@@ -1,6 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { NextRequest, NextResponse } from "next/server";
 // import { getServerSession } from "next-auth";
-import { Options } from "../auth/[...nextauth]/options";
+// import { Options } from "../auth/[...nextauth]/options";
 
 export async function GET(req: NextRequest) {
   // const session = await getServerSession(Options);
