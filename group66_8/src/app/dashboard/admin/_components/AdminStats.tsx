@@ -5,13 +5,27 @@ import { useGetCycleQuery } from '@/lib/redux/api/cycleApi';
 import { useGetusersQuery } from '@/lib/redux/api/userApi';
 import { Cycle } from '@/lib/redux/types/cycle';
 import { CardComponent } from './CardComponent';
+import { SkeletonCard } from './SkeletonCard';
 
 const AdminStats = () => {
     const { data: cycleData } = useGetCycleQuery();
-    // const { data: users = [] } = useGetusersQuery(); 
     const { data, isLoading, error } = useGetusersQuery({ page: 1, limit: 4 });
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+            <div className="flex justify-center py-3">
+                <div className="flex flex-col items-start gap-4">
+                    <h1 className="text-2xl font-bold">Admin Command Center</h1>
+                    <div className="flex gap-8 flex-wrap justify-center">
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (error) return <div>Error loading users</div>;
 
     const getTotalUsers = () => data?.data.total_count;

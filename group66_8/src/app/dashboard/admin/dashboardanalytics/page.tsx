@@ -1,12 +1,12 @@
 import React from 'react'
-import { getServerSession } from 'next-auth'
+// import { getServerSession } from 'next-auth'
 import Analytics from '../_components/Analyics'
 function Analytic() {
-  const session = getServerSession()
-  console.log(session)
+  // const session = getServerSession()
+  // console.log(session)
   return (
     <div>
-      <Analytics/>
+      <Analytics />
     </div>
   )
 }

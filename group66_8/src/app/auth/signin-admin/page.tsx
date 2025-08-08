@@ -15,7 +15,7 @@ function SigninAdmin() {
   const { errors } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); 
+  const router = useRouter();
 
   const onSubmit = async (data: User) => {
     setError(null);
@@ -24,16 +24,16 @@ function SigninAdmin() {
       password: data.password,
       role: "Admin",
       rememberme: rememberMe,
-      redirect: false, 
+      redirect: false,
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-    await getSession();
-    router.refresh()
-      
+      await getSession();
+      router.refresh()
+
       router.push("/dashboard/admin");
     }
   };

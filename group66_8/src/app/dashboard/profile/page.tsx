@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {  useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import type { Session as NextAuthSession } from 'next-auth';
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import background from "../../../../public/file.svg";
@@ -32,7 +33,10 @@ type ProfileForm = {
 
 function UserProfile() {
   //await getSession();
-  const { data: session, status} = useSession();
+  const { data: session, status } = useSession() as {
+    data: NextAuthSession | null;
+    status: 'authenticated' | 'loading' | 'unauthenticated';
+  };
   const [data, setData] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -53,7 +57,7 @@ function UserProfile() {
   } = useForm<ProfileForm>();
 
   useEffect(() => {
-    
+
     const fetchProfile = async () => {
       if (status !== "authenticated" || !session?.accessToken) {
         setError("You must be logged in to view your profile.");
@@ -82,7 +86,7 @@ function UserProfile() {
           email: profileData.data.email,
         });
       } catch (e) {
-        setError( "An error occurred while fetching your profile");
+        setError("An error occurred while fetching your profile");
         console.error("Fetch error:");
       }
     };
@@ -121,12 +125,12 @@ function UserProfile() {
       resetPassword();
       alert("Password changed successfully!");
     } catch (err) {
-  if (err instanceof Error) {
-    setFormError(err.message);
-  } else {
-    setFormError("An error occurred while changing your password");
-  }
-}
+      if (err instanceof Error) {
+        setFormError(err.message);
+      } else {
+        setFormError("An error occurred while changing your password");
+      }
+    }
 
   };
 
@@ -156,7 +160,7 @@ function UserProfile() {
       setData(updatedProfile);
       alert("Profile updated successfully!");
     } catch (e) {
-      setProfileFormError( "An error occurred while updating your profile");
+      setProfileFormError("An error occurred while updating your profile");
       console.error("Profile update error:", e);
     } finally {
       setIsProfileLoading(false);

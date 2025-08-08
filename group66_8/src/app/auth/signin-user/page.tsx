@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import { Logo } from "@/lib";
 import Image from "next/image";
+import type { Session as NextAuthSession } from "next-auth";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -16,7 +17,7 @@ function SigninUser() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: User) => {
-    setError(null); 
+    setError(null);
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -30,14 +31,14 @@ function SigninUser() {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      const session = await getSession();
-      if(session?.role==='applicant'){
+      const session = (await getSession()) as NextAuthSession | null;
+      if (session?.role === 'applicant') {
 
       }
-      else if(session?.role==='manager'){
-          
+      else if (session?.role === 'manager') {
+
       }
-      else if(session?.role==='reviewer'){
+      else if (session?.role === 'reviewer') {
 
       }
     }
