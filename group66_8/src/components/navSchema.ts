@@ -12,9 +12,9 @@ export const adminLinks: NavLinks[] = [
 ];
 
 export const signinLinks: NavLinks[] = [
-  { name: "The Journey", href: "/" },
-  { name: "About", href: "/" },
-  { name: "Testmonials", href: "/" },
+  { name: "The Journey", href: "#journey" },
+  { name: "About", href: "#about" },
+  { name: "Testmonials", href: "#testmonials" },
   { name: "Create an account", href: "/auth/signup" },
 ];
 export const signupLinks: NavLinks[] = [
@@ -33,6 +33,15 @@ export const forgotPasswordLinks: NavLinks[] = [
 
 export const applicantLinks: NavLinks[] = [
   { name: "Your Profile", href: "/dashboard/profile" },
-  { name: "Applicant", href: "" },
+  { name: "Logout", href: "" },
+];
+
+export const managerLinks: NavLinks[] = [
+  { name: "Your Profile", href: "/dashboard/profile" },
+  { name: "Logout", href: "" },
+];
+
+export const reviewerLinks: NavLinks[] = [
+  { name: "Your Profile", href: "/dashboard/profile" },
   { name: "Logout", href: "" },
 ];

@@ -41,8 +41,8 @@ async function updatePassword(token: string, newPassword: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        token:token,
-        new_password:newPassword,
+      token: token,
+      new_password: newPassword,
     }),
   });
 
@@ -109,7 +109,7 @@ function ResetPassword() {
               Your password has been updated successfully.
             </p>
             <Link href="/auth/signin-user">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+              <Button className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white">
                 Back to login
               </Button>
             </Link>
@@ -128,11 +128,10 @@ function ResetPassword() {
                 type="password"
                 placeholder="Enter new password"
                 {...register("password")}
-                className={`w-full px-3 py-2 border-2 rounded-sm focus:outline-none focus:ring-1 ${
-                  errors.password
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-200 focus:ring-blue-500"
-                }`}
+                className={`w-full px-3 py-2 border-2 rounded-sm focus:outline-none focus:ring-1 ${errors.password
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-200 focus:ring-blue-500"
+                  }`}
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">
@@ -195,11 +194,10 @@ function ResetPassword() {
                 type="password"
                 placeholder="Confirm new password"
                 {...register("confirmPassword")}
-                className={`w-full px-3 py-2 border-2 rounded-sm focus:outline-none focus:ring-1 ${
-                  errors.confirmPassword
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-200 focus:ring-blue-500"
-                }`}
+                className={`w-full px-3 py-2 border-2 rounded-sm focus:outline-none focus:ring-1 ${errors.confirmPassword
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-200 focus:ring-blue-500"
+                  }`}
               />
               {errors.confirmPassword && (
                 <p className="mt-1 text-sm text-red-600">
@@ -210,7 +208,7 @@ function ResetPassword() {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-sm shadow-sm hover:cursor-pointer disabled:opacity-70"
+              className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white py-2 px-4 rounded-sm shadow-sm hover:cursor-pointer disabled:opacity-70"
               disabled={isLoading || Object.keys(errors).length > 0}
             >
               {isLoading ? (

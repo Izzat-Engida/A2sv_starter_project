@@ -10,9 +10,19 @@ import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const router = useRouter();
   const { data, isLoading, isError, refetch } = useGetusersQuery({
     page: currentPage,
@@ -20,9 +30,9 @@ export default function UsersPage() {
   });
   const [searchTerm, setSearchTerm] = useState("");
   const { data: session } = useSession();
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
   const redirectToSignIn = () => {
     toast.error("Session expired. Please sign in again.");
     router.push("/auth/signin-admin");
@@ -39,9 +49,6 @@ export default function UsersPage() {
   };
 
   const handleDelete = async (userId: string) => {
-    const confirmed = confirm("Are you sure you want to delete this user?");
-    if (!confirmed) return;
-
     try {
       if (!session?.accessToken) {
         redirectToSignIn();
@@ -77,6 +84,8 @@ export default function UsersPage() {
 
       toast.success("User deleted successfully");
       refetch();
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
     } catch (error) {
       console.error("Delete error:", error);
       if (error instanceof Error && error.message.includes("Unauthorized")) {
@@ -87,6 +96,11 @@ export default function UsersPage() {
         );
       }
     }
+  };
+
+  const openDeleteDialog = (user: User) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
   };
 
   const totalUsers = data?.data?.total_count || 0;
@@ -190,18 +204,18 @@ export default function UsersPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button className="bg-indigo-200 text-black w-full sm:w-auto">
+          <Button className="bg-[#4F46E5] w-full sm:w-auto">
             All Roles
           </Button>
         </div>
       </div>
 
       {/* Table header (hidden on mobile) */}
-      <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr] p-3 text-gray-500">
+      <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_auto] p-3 text-gray-500">
         <p>Name</p>
         <p>Role</p>
         <p>Status</p>
-        <p></p>
+        <p>Actions</p>
       </div>
 
       {/* User list */}
@@ -210,7 +224,7 @@ export default function UsersPage() {
           ? Array.from({ length: 5 }).map((_, idx) => (
             <li
               key={idx}
-              className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-2 p-3"
+              className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_auto] gap-2 p-3"
             >
               <div className="flex items-start md:items-center gap-3">
                 <Skeleton className="h-10 w-10 rounded-full" />
@@ -223,7 +237,7 @@ export default function UsersPage() {
           : filteredUsers.map((user: User) => (
             <li
               key={user.id}
-              className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-2 p-3"
+              className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_auto] gap-2 p-3"
             >
               {/* Avatar + Name + Role (flexed on mobile) */}
               <div className="flex items-start md:items-center gap-3">
@@ -255,8 +269,8 @@ export default function UsersPage() {
                 {user.role}
               </p>
 
-              {/* Mobile: Status + Actions together */}
-              <div className="flex justify-between md:block">
+              {/* Status and Actions */}
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                 {/* Status */}
                 <p
                   className={`text-sm md:text-base inline-flex w-20 items-center px-2 py-1 rounded-full font-medium ${user.is_active
@@ -267,10 +281,10 @@ export default function UsersPage() {
                   {user.is_active ? "Active" : "Inactive"}
                 </p>
 
-                {/* Actions */}
-                <div className="flex gap-3 md:justify-end">
+                {/* Actions - positioned to the right on large screens */}
+                <div className="flex gap-3 md:ml-auto">
                   <button
-                    className="text-indigo-600"
+                    className="text-indigo-600 hover:text-indigo-800 transition-colors"
                     onClick={() => {
                       if (!session?.accessToken) {
                         redirectToSignIn();
@@ -282,16 +296,14 @@ export default function UsersPage() {
                     Edit
                   </button>
                   <button
-                    className="text-red-600"
-                    onClick={() => handleDelete(user.id)}
+                    className="text-red-600 hover:text-red-800 transition-colors"
+                    onClick={() => openDeleteDialog(user)}
                   >
                     Delete
                   </button>
                 </div>
               </div>
             </li>
-
-
           ))}
       </ul>
 
@@ -321,6 +333,27 @@ export default function UsersPage() {
           </button>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete user "{userToDelete?.full_name}"?
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => handleDelete(userToDelete?.id || "")}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

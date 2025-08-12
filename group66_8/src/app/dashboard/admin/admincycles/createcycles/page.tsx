@@ -120,7 +120,7 @@ export default function CycleForm() {
           <div className="flex justify-end">
             <Button
               type="submit"
-              className="w-auto py-3 text-lg rounded-lg bg-[#4F46E5] hover:bg-blue-950"
+              className="w-auto py-3 text-lg rounded-lg bg-[#4F46E5] hover:bg-indigo-700"
             >
               Submit Cycle
             </Button>

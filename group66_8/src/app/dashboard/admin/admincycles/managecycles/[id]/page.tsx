@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { toast } from 'sonner' 
+import { toast } from 'sonner'
 
 export default function Page() {
   const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm<ncycle>()
@@ -96,7 +96,7 @@ export default function Page() {
       return
     }
 
-    toast('Cycle closed successfully')
+    toast.success('Cycle closed successfully')
     setIsDeleted(true)
     router.push('/dashboard/admin/admincycles')
   }
@@ -104,7 +104,7 @@ export default function Page() {
   return (
     <div className="h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex flex-col justify-start px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-xl w-full mx-auto bg-white p-8 sm:p-10 rounded-3xl shadow-lg border border-gray-100">
-        
+
         <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-indigo-700 mb-4">
           Manage Cycle
         </h2>
@@ -152,7 +152,7 @@ export default function Page() {
           <div className='flex justify-end gap-4'>
             <Button
               type="submit"
-              className="w-auto py-3 px-6 text-lg rounded-lg bg-indigo-600 cursor-pointer hover:bg-indigo-800 transition-all duration-200"
+              className="w-auto py-3 px-6 text-lg rounded-lg bg-[#4F46E5] hover:bg-[#4F46E5]/90 text-white cursor-pointer transition-all duration-200"
             >
               Save Changes
             </Button>
@@ -170,10 +170,9 @@ export default function Page() {
             <Button
               type="button"
               onClick={handleDelete}
-              variant="destructive"
-              className="w-full py-3 px-6 text-lg rounded-lg cursor-pointer hover:bg-red-700 transition-all duration-200"
+              className="w-full py-3 px-6 text-lg bg-[#4F46E5] hover:bg-[#4F46E5]/90 text-white rounded-lg cursor-pointer transition-all duration-200"
             >
-              Delete Cycle
+              Close Cycle
             </Button>
           </div>
         </form>

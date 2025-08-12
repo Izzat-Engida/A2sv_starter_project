@@ -6,6 +6,7 @@ import { getSession, signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
+import { Loader2 } from "lucide-react";
 import { Logo } from "@/lib";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,35 +20,47 @@ function SigninUser() {
 
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const onSubmit = async (data: User) => {
-    setError(null);
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      role: "user",
-      rememberme: rememberMe,
-      redirect: false,
-      callbackUrl: "/",
-    });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    if (res?.error) {
-      setError(res.error);
-      toast.error(res.error || "Sign-in failed");
-      console.error("Sign-in error:", res.error);
-    } else {
-      const session = await getSession();
-      if (session?.role === "admin") {
-        toast.success("Unauthorized Access!");
+  const onSubmit = async (data: User) => {
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const res = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        role: "user",
+        rememberme: rememberMe,
+        redirect: false,
+        callbackUrl: "/",
+      });
+
+      if (res?.error) {
+        setError(res.error);
+        toast.error(res.error || "Sign-in failed");
+        console.error("Sign-in error:", res.error);
       } else {
-        toast.success("Signed in successfully");
-        if (session?.role === "applicant") {
-          router.push("/dashboard/applicant");
-        } else if (session?.role === "manager") {
-          router.push("/dashboard/manager");
-        } else if (session?.role === "reviewer") {
-          router.push("/dashboard/reviewer");
+        const session = await getSession();
+        if (session?.role === "admin") {
+          toast.success("Unauthorized Access!");
+        } else {
+          toast.success("Signed in successfully");
+          if (session?.role === "applicant") {
+            router.push("/dashboard/applicant");
+          } else if (session?.role === "manager") {
+            router.push("/dashboard/manager");
+          } else if (session?.role === "reviewer") {
+            router.push("/dashboard/reviewer");
+          }
         }
       }
+    } catch (error) {
+      console.error("Sign-in error:", error);
+      setError("An unexpected error occurred");
+      toast.error("An unexpected error occurred");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -101,9 +114,19 @@ function SigninUser() {
           <Button
             type="submit"
             className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
+            disabled={isSubmitting}
           >
-            <FaLock />
-            <span>Sign in</span>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <FaLock />
+                <span>Sign in</span>
+              </>
+            )}
           </Button>
         </form>
       </div>

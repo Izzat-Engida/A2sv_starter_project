@@ -1,18 +1,18 @@
 "use client";
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { applicantLinks } from './navSchema'
+import { managerLinks, reviewerLinks } from './navSchema'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/lib';
 import { Menu, X } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 
-const ApplicantNav = () => {
+const ReviewerNav = () => {
     const path = usePathname()
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
-    const userName = session?.user?.name || 'Applicant'
+    const userName = session?.user?.name || 'Reviewer'
 
     useEffect(() => setIsOpen(false), [path])
 
@@ -29,11 +29,11 @@ const ApplicantNav = () => {
                 </div>
 
                 <div className='hidden md:flex items-center gap-4'>
-                    <Link href="/dashboard/applicant/in-progress" className='text-sm hover:underline'>Dashboard</Link>
+                    <Link href="/dashboard/reviewer" className='text-sm hover:underline'>Dashboard</Link>
                 </div>
 
                 <div className='hidden md:flex gap-6'>
-                    {applicantLinks.map((link) => (
+                    {managerLinks.map((link) => (
                         link.name.toLowerCase() === 'logout' ? (
                             <button
                                 key={link.name}
@@ -46,7 +46,7 @@ const ApplicantNav = () => {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`relative px-2 py-1 hover:text-oxford-blue ${path.startsWith(link.name) ? "text-purple-light " : "text-pale-sky"}`}
+                                className={`relative px-2 py-1 hover:text-oxford-blue ${path.startsWith(link.name) ? "text-purple-light " : "text-pale-sky"} hover:underline`}
                             >
                                 {link.name}
                                 {path.startsWith(link.name) && (
@@ -72,8 +72,8 @@ const ApplicantNav = () => {
             {isOpen && (
                 <div className='md:hidden absolute left-0 right-0 top-full bg-white shadow-md border-t z-50'>
                     <div className='px-4 py-3 space-y-1'>
-                        <Link href="/dashboard/applicant/in-progress" className='block px-2 py-2 rounded hover:bg-gray-50'>Dashboard</Link>
-                        {applicantLinks.map((link) => (
+                        <Link href="/dashboard/manager" className='block px-2 py-2 rounded hover:bg-gray-50'>Dashboard</Link>
+                        {reviewerLinks.map((link) => (
                             link.name.toLowerCase() === 'logout' ? (
                                 <button
                                     key={link.name}
@@ -101,4 +101,4 @@ const ApplicantNav = () => {
     )
 }
 
-export default ApplicantNav
+export default ReviewerNav

@@ -14,31 +14,41 @@ import { toast } from "sonner";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
-  const { errors, isSubmitting } = formState;
+  const { errors } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const onSubmit = async (data: User) => {
+    setIsSubmitting(true);
     setError(null);
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      role: "Admin",
-      rememberme: rememberMe,
-      redirect: false,
-    });
 
-    if (res?.error) {
-      setError(res.error);
-      toast.error(res.error || "Sign-in failed");
-      console.error("Sign-in error:", res.error);
-    } else {
-      toast.success("Signed in successfully");
-      await getSession();
-      router.refresh();
+    try {
+      const res = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        role: "Admin",
+        rememberme: rememberMe,
+        redirect: false,
+      });
 
-      router.push("/dashboard/admin");
+      if (res?.error) {
+        setError(res.error);
+        toast.error(res.error || "Sign-in failed");
+        console.error("Sign-in error:", res.error);
+      } else {
+        toast.success("Signed in successfully");
+        await getSession();
+        router.refresh();
+        router.push("/dashboard/admin");
+      }
+    } catch (error) {
+      console.error("Sign-in error:", error);
+      setError("An unexpected error occurred");
+      toast.error("An unexpected error occurred");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,6 +99,7 @@ function SigninAdmin() {
           <Button
             type="submit"
             className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
+            disabled={isSubmitting}
           >
             {isSubmitting ? (
               <>

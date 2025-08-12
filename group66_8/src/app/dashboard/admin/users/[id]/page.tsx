@@ -354,7 +354,7 @@ export default function EditUserPage() {
                 </Button>
                 <Button
                   type="submit"
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2 h-10 bg-[#4F46E5] hover:bg-blue-700 text-white"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 h-10 bg-[#4F46E5] hover:bg-[#352dd8] text-white"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -366,7 +366,7 @@ export default function EditUserPage() {
                 <Button
                   type="button"
                   onClick={handleDelete}
-                  className="w-full sm:w-auto px-4 sm:px-6 py-2 h-10 bg-red-600 hover:bg-red-700 text-white"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-2 h-10 bg-black text-white"
                   disabled={isDeleting}
                 >
                   {isDeleting ? (

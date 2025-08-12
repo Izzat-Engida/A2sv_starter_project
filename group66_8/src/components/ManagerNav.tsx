@@ -1,15 +1,18 @@
 "use client";
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { adminLinks, applicantLinks } from './navSchema'
+import { managerLinks } from './navSchema'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/lib';
 import { Menu, X } from 'lucide-react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+
 const ManagerNav = () => {
     const path = usePathname()
+    const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
+    const userName = session?.user?.name || 'Manager'
 
     useEffect(() => setIsOpen(false), [path])
 
@@ -30,7 +33,7 @@ const ManagerNav = () => {
                 </div>
 
                 <div className='hidden md:flex gap-6'>
-                    {applicantLinks.map((link) => (
+                    {managerLinks.map((link) => (
                         link.name.toLowerCase() === 'logout' ? (
                             <button
                                 key={link.name}
@@ -52,6 +55,7 @@ const ManagerNav = () => {
                             </Link>
                         )
                     ))}
+                    <div className='text-sm text-pale-sky'>{userName}</div>
                 </div>
 
                 <button
@@ -68,8 +72,8 @@ const ManagerNav = () => {
             {isOpen && (
                 <div className='md:hidden absolute left-0 right-0 top-full bg-white shadow-md border-t z-50'>
                     <div className='px-4 py-3 space-y-1'>
-                        <Link href="/dashboard/applicant/in-progress" className='block px-2 py-2 rounded hover:bg-gray-50'>Dashboard</Link>
-                        {applicantLinks.map((link) => (
+                        <Link href="/dashboard/manager" className='block px-2 py-2 rounded hover:bg-gray-50'>Dashboard</Link>
+                        {managerLinks.map((link) => (
                             link.name.toLowerCase() === 'logout' ? (
                                 <button
                                     key={link.name}
@@ -88,6 +92,8 @@ const ManagerNav = () => {
                                 </Link>
                             )
                         ))}
+                        <div className='border-t my-2' />
+                        <div className='px-2 py-2 text-sm text-pale-sky'>{userName}</div>
                     </div>
                 </div>
             )}

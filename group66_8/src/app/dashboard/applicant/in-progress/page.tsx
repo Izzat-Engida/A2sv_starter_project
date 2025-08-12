@@ -113,7 +113,7 @@ export default async function ApplicationStatusPage() {
         <Card className="p-6 text-center">
           <h2 className="text-xl font-bold mb-4">No Application Found</h2>
           <p className="mb-4">You haven&#39;t submitted an application yet.</p>
-          <Button asChild className="bg-blue-600 hover:bg-blue-700">
+          <Button asChild className="bg-[#4F46E5] hover:bg-[#352dd8]">
             <Link href="/dashboard/applicant/apply">Start New Application</Link>
           </Button>
         </Card>
@@ -177,7 +177,7 @@ export default async function ApplicationStatusPage() {
                         className={`text-lg font-medium ${stage.completed
                           ? "text-gray-800"
                           : stage.active
-                            ? "text-blue-600"
+                            ? "text-[#4F46E5]"
                             : "text-gray-500"
                           }`}
                       >
@@ -237,7 +237,7 @@ export default async function ApplicationStatusPage() {
             </p>
           </Card>
 
-          <Card className="p-6 bg-blue-600 border-blue-100">
+          <Card className="p-6 bg-[#4F46E5] border-blue-100">
             <h2 className="text-xl text-white font-bold mb-4">
               Get Ready for the Interview!
             </h2>

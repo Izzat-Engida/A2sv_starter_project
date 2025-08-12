@@ -56,7 +56,7 @@ const AdminNav = () => {
 
                 <div className='hidden md:flex items-center gap-4'>
                     <Link href={profileHref} className='text-sm hover:underline'>Your Profile</Link>
-                    <div className='text-sm'>Admin User</div>
+                    <div className='text-sm text-pale-sky'>{session?.user?.name || 'Admin'}</div>
                     <button onClick={() => signOut({ callbackUrl: '/' })}>Logout</button>
                 </div>
 
@@ -86,7 +86,7 @@ const AdminNav = () => {
                         <div className='border-t my-2' />
                         <div className='flex flex-col gap-1 px-2'>
                             <Link href={profileHref} className='py-2 text-sm hover:underline'>Your Profile</Link>
-                            <div className='py-2 text-sm'>Admin User</div>
+                            <div className='py-2 text-sm text-pale-sky'>{session?.user?.name || 'Admin'}</div>
                             <button className='py-2 text-left' onClick={() => signOut({ callbackUrl: '/' })}>Logout</button>
                         </div>
                     </div>

@@ -193,7 +193,7 @@ export default function ApplicationDetailsModal({
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-[90vw] xl:max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-4">
             <Button
@@ -204,7 +204,7 @@ export default function ApplicationDetailsModal({
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <DialogTitle>
+            <DialogTitle className="text-xl lg:text-2xl">
               Application: {app?.applicant_name || "Unknown"}
             </DialogTitle>
           </div>
@@ -212,58 +212,69 @@ export default function ApplicationDetailsModal({
 
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow p-4 md:p-6 h-full">
-                <h2 className="text-lg md:text-xl font-semibold mb-4">
+            {/* Left Column - Applicant Profile */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white rounded-lg shadow p-6 h-full">
+                <h2 className="text-xl font-semibold mb-6">
                   Applicant Profile
                 </h2>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <DetailSection title="Basic Information">
-                    <DetailItem label="Full Name" value={app?.applicant_name} />
-                    <DetailItem
-                      label="Status"
-                      value={
-                        app?.status === "pending_review"
-                          ? `Assigned to ${review?.reviewer_name || "reviewer"}`
-                          : app?.status
-                      }
-                    />
-                    <DetailItem
-                      label="Submitted At"
-                      value={
-                        app?.submitted_at
-                          ? new Date(app.submitted_at).toLocaleDateString()
-                          : "N/A"
-                      }
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <DetailItem label="Full Name" value={app?.applicant_name} />
+                      <DetailItem
+                        label="Status"
+                        value={
+                          app?.status === "pending_review"
+                            ? `Assigned to ${review?.reviewer_name || "reviewer"}`
+                            : app?.status
+                        }
+                      />
+                      <DetailItem
+                        label="Submitted At"
+                        value={
+                          app?.submitted_at
+                            ? new Date(app.submitted_at).toLocaleDateString()
+                            : "N/A"
+                        }
+                      />
+                    </div>
                   </DetailSection>
 
                   <DetailSection title="Education">
-                    <DetailItem label="School" value={app?.school} />
-                    <DetailItem label="Student ID" value={app?.student_id} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <DetailItem label="School" value={app?.school} />
+                      <DetailItem label="Student ID" value={app?.student_id} />
+                    </div>
                   </DetailSection>
 
                   <DetailSection title="Coding Profiles">
-                    <DetailItem
-                      label="LeetCode Handle"
-                      value={app?.leetcode_handle}
-                    />
-                    <DetailItem
-                      label="Codeforces Handle"
-                      value={app?.codeforces_handle}
-                    />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <DetailItem
+                        label="LeetCode Handle"
+                        value={app?.leetcode_handle}
+                      />
+                      <DetailItem
+                        label="Codeforces Handle"
+                        value={app?.codeforces_handle}
+                      />
+                    </div>
                   </DetailSection>
 
                   <DetailSection title="Essay: Tell us about yourself">
-                    <p className="text-gray-700 whitespace-pre-line text-sm md:text-base">
-                      {app?.essay_about_you || "Not provided"}
-                    </p>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 whitespace-pre-line">
+                        {app?.essay_about_you || "Not provided"}
+                      </p>
+                    </div>
                   </DetailSection>
 
                   <DetailSection title="Essay: Why do you want to join A2SV?">
-                    <p className="text-gray-700 whitespace-pre-line text-sm md:text-base">
-                      {app?.essay_why_a2sv || "Not provided"}
-                    </p>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 whitespace-pre-line">
+                        {app?.essay_why_a2sv || "Not provided"}
+                      </p>
+                    </div>
                   </DetailSection>
 
                   {app?.resume_url && (
@@ -275,10 +286,7 @@ export default function ApplicationDetailsModal({
                           rel="noopener noreferrer"
                         >
                           <Download className="h-4 w-4" />
-                          <span className="hidden sm:inline">
-                            Download Resume
-                          </span>
-                          <span className="sm:hidden">Download</span>
+                          <span>Download Resume</span>
                         </a>
                       </Button>
                     </DetailSection>
@@ -287,12 +295,13 @@ export default function ApplicationDetailsModal({
               </div>
             </div>
 
-            <div>
-              <div className="bg-white rounded-lg shadow p-4 md:p-6 h-full">
-                <h2 className="text-lg md:text-xl font-semibold mb-4">
+            {/* Right Column - Manager Actions and Review Details */}
+            <div className="space-y-6">
+              <div className="bg-white rounded-lg shadow p-6 h-full">
+                <h2 className="text-xl font-semibold mb-6">
                   Manager Actions
                 </h2>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <DetailItem
                     label="Assigned Reviewer"
                     value={application.assigned_reviewer_name || "Not assigned"}
@@ -301,7 +310,7 @@ export default function ApplicationDetailsModal({
                   {app?.status === "pending_review" && (
                     <Button
                       variant="default"
-                      className=" bg-blue-700 hover:bg-blue-800 text-white cursor-pointer"
+                      className="w-full bg-blue-700 hover:bg-blue-800 text-white cursor-pointer"
                       onClick={assignReviewer}
                       disabled={isAccepting || isRejecting || isConfirming}
                     >
@@ -309,82 +318,87 @@ export default function ApplicationDetailsModal({
                     </Button>
                   )}
 
-                  <div className="space-y-2 mt-3">
+                  <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
                         Final Decision
                       </label>
-                      <p className="text-gray-500 text-sm my-2">
-                        This action is final will notify the applicant
+                      <p className="text-gray-500 text-sm mt-1">
+                        This action is final and will notify the applicant
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-4">
                       <Button
-                        variant="outline"
-                        className="flex-1 bg-red-500 text-white hover:bg-red-600 hover:text-white cursor-pointer"
-                        onClick={() => makeDecision("rejected")}
-                        disabled={isAccepting || isRejecting || isConfirming}
-                      >
-                        {isRejecting ? "Rejecting..." : "Reject"}
-                      </Button>
-                      <Button
-                        className="flex-1 bg-green-600 hover:bg-green-700 cursor-pointer"
+                        className="flex-1 bg-[#4F46E5] cursor-pointer"
                         onClick={() => makeDecision("accepted")}
                         disabled={isAccepting || isRejecting || isConfirming}
                       >
                         {isAccepting ? "Accepting..." : "Accept"}
                       </Button>
+                      <Button
+                        variant="outline"
+                        className="flex-1 bg-black text-white cursor-pointer"
+                        onClick={() => makeDecision("rejected")}
+                        disabled={isAccepting || isRejecting || isConfirming}
+                      >
+                        {isRejecting ? "Rejecting..." : "Reject"}
+                      </Button>
+
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <h2 className="text-lg md:text-xl font-semibold mb-4">
-              Review Details
-            </h2>
-            <div className="space-y-4">
-              <DetailSection title="Activity Check Notes">
-                <p className="text-gray-700 whitespace-pre-line text-sm md:text-base">
-                  {review?.activity_check_notes || "No notes provided"}
-                </p>
-              </DetailSection>
+              <div className="bg-white rounded-lg shadow p-6">
+                <h2 className="text-xl font-semibold mb-6">
+                  Review Details
+                </h2>
+                <div className="space-y-6">
+                  <DetailSection title="Activity Check Notes">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 whitespace-pre-line">
+                        {review?.activity_check_notes || "No notes provided"}
+                      </p>
+                    </div>
+                  </DetailSection>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <ScoreItem
-                  label="Resume Score"
-                  value={review?.resume_score}
-                  max={100}
-                />
-                <ScoreItem
-                  label="Why A2SV Essay Score"
-                  value={review?.essay_why_a2sv_score}
-                  max={100}
-                />
-                <ScoreItem
-                  label="About You Essay Score"
-                  value={review?.essay_about_you_score}
-                  max={100}
-                />
-                <ScoreItem
-                  label="Technical Interview"
-                  value={review?.technical_interview_score}
-                  max={100}
-                />
-                <ScoreItem
-                  label="Behavioral Interview"
-                  value={review?.behavioral_interview_score}
-                  max={100}
-                />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <ScoreItem
+                      label="Resume Score"
+                      value={review?.resume_score}
+                      max={100}
+                    />
+                    <ScoreItem
+                      label="Why A2SV Essay Score"
+                      value={review?.essay_why_a2sv_score}
+                      max={100}
+                    />
+                    <ScoreItem
+                      label="About You Essay Score"
+                      value={review?.essay_about_you_score}
+                      max={100}
+                    />
+                    <ScoreItem
+                      label="Technical Interview"
+                      value={review?.technical_interview_score}
+                      max={100}
+                    />
+                    <ScoreItem
+                      label="Behavioral Interview"
+                      value={review?.behavioral_interview_score}
+                      max={100}
+                    />
+                  </div>
+
+                  <DetailSection title="Interview Notes">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 whitespace-pre-line">
+                        {review?.interview_notes || "No notes provided"}
+                      </p>
+                    </div>
+                  </DetailSection>
+                </div>
               </div>
-
-              <DetailSection title="Interview Notes">
-                <p className="text-gray-700 whitespace-pre-line text-sm md:text-base">
-                  {review?.interview_notes || "No notes provided"}
-                </p>
-              </DetailSection>
             </div>
           </div>
         </div>
@@ -401,22 +415,22 @@ function DetailSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="space-y-2">
-      <h3 className="font-medium text-gray-700 border-b pb-2 text-sm md:text-base">
+    <div className="space-y-3">
+      <h3 className="font-medium text-gray-700 border-b pb-2 text-base">
         {title}
       </h3>
-      <div className="pl-2 md:pl-4 space-y-3">{children}</div>
+      <div className="space-y-4">{children}</div>
     </div>
   );
 }
 
 function DetailItem({ label, value }: { label: string; value?: string }) {
   return (
-    <div className="mb-3">
-      <p className="block text-xs sm:text-sm text-gray-500 font-medium mb-1">
+    <div>
+      <p className="block text-sm text-gray-500 font-medium mb-1">
         {label}
       </p>
-      <p className="block text-sm sm:text-base text-gray-700 pl-1 bg-gray-100 rounded">
+      <p className="block text-base text-gray-700 pl-1 bg-gray-100 rounded p-2">
         {value || "Not provided"}
       </p>
     </div>
@@ -433,9 +447,9 @@ function ScoreItem({
   max: number;
 }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
-      <p className="text-xs sm:text-sm text-gray-500 sm:col-span-1">{label}</p>
-      <p className="font-medium sm:col-span-2 text-sm sm:text-base">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <p className="text-sm text-gray-500">{label}</p>
+      <p className="font-medium text-base">
         {value !== undefined ? `${value}/${max}` : "Not scored"}
       </p>
     </div>

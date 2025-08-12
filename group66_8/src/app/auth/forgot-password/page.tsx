@@ -79,7 +79,7 @@ function ForgotPassword() {
               with reset instructions.
             </p>
             <Link href="/auth/signin-user">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+              <Button className="w-full bg-[#4F46E5] hover:bg-[#352dd8] text-white">
                 Back to login
               </Button>
             </Link>
@@ -105,7 +105,7 @@ function ForgotPassword() {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-sm shadow-sm hover:cursor-pointer"
+              className="w-full bg-[#4F46E5] hover:bg-[#352dd8] text-white py-2 px-4 rounded-sm shadow-sm hover:cursor-pointer"
               disabled={isLoading}
             >
               {isLoading ? "Sending..." : "Send reset link"}
@@ -115,7 +115,7 @@ function ForgotPassword() {
             <div className="text-center text-sm text-gray-600 mt-4">
               <Link
                 href="/auth/signin-user"
-                className="text-blue-600 hover:underline"
+                className="text-[#4F46E5] hover:underline"
               >
                 Back to login
               </Link>

@@ -16,7 +16,7 @@ export function CycleCard({ cycle }: Props) {
 
   const session = useSession()
 
- 
+
 
   const getRandomHexColor = () => {
     const r = Math.floor(Math.random() * 100);
@@ -29,17 +29,17 @@ export function CycleCard({ cycle }: Props) {
     e.preventDefault();
     e.stopPropagation();
 
-    const link_activate=`https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${cycle.id}/activate`
-    const link_deactivate=`https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${cycle.id}/deactivate`
-    const res=await fetch(cycle.is_active? link_deactivate :link_activate,{
-      method:"PATCH",
+    const link_activate = `https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${cycle.id}/activate`
+    const link_deactivate = `https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${cycle.id}/deactivate`
+    const res = await fetch(cycle.is_active ? link_deactivate : link_activate, {
+      method: "PATCH",
       headers: {
-  "Content-Type": "application/json",
-  authorization: `Bearer ${session.data?.accessToken}`
-}
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session.data?.accessToken}`
+      }
     })
-    if(!res.ok){
-      const err=await res.json()
+    if (!res.ok) {
+      const err = await res.json()
       console.error(err.message)
       return
     }
@@ -53,9 +53,10 @@ export function CycleCard({ cycle }: Props) {
         <Button
           onClick={handleClose}
           aria-label={`Close cycle ${cycle.name}`}
-          style={{ backgroundColor: getRandomHexColor() }}
+          // style={{ backgroundColor: getRandomHexColor() }}
+          className='bg-[#4F46E5]'
         >
-          {cycle.is_active? <span>close</span>:<span>open</span>}
+          {cycle.is_active ? <span>close</span> : <span>open</span>}
         </Button>
       </div>
       <div className="flex justify-between items-center">

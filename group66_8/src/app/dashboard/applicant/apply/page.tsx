@@ -25,6 +25,7 @@ import {
 } from "@/lib/redux/slice/applicationSlice";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { Loader2 } from "lucide-react";
 
 const page = () => {
   const { data: session } = useSession();
@@ -40,6 +41,7 @@ const page = () => {
   }
 
   const [step, setStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     idNumber: "",
     school: "",
@@ -62,22 +64,24 @@ const page = () => {
     const isValid = validateStep(step);
     if (!isValid) return;
 
-    const data = new FormData();
-
-    data.append("student_id", formData.idNumber);
-    data.append("school", formData.school);
-    data.append("degree", formData.degree);
-    data.append("country", formData.country);
-    data.append("codeforces_handle", formData.codeforces);
-    data.append("leetcode_handle", formData.leetcode);
-    data.append("essay_about_you", formData.about);
-    data.append("essay_why_a2sv", formData.whyJoin);
-
-    if (formData.resume) {
-      data.append("resume", formData.resume);
-    }
+    setIsSubmitting(true);
 
     try {
+      const data = new FormData();
+
+      data.append("student_id", formData.idNumber);
+      data.append("school", formData.school);
+      data.append("degree", formData.degree);
+      data.append("country", formData.country);
+      data.append("codeforces_handle", formData.codeforces);
+      data.append("leetcode_handle", formData.leetcode);
+      data.append("essay_about_you", formData.about);
+      data.append("essay_why_a2sv", formData.whyJoin);
+
+      if (formData.resume) {
+        data.append("resume", formData.resume);
+      }
+
       const res = await fetch(
         "https://a2sv-application-platform-backend-team8.onrender.com/applications/",
         {
@@ -99,17 +103,28 @@ const page = () => {
         return;
       }
 
-      if (!res.ok) throw new Error("Submission failed");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || "Submission failed");
+      }
 
-      // Mark final step and application state as completed in Redux
+      const result = await res.json();
+
       dispatch(setFormStepStatus({ step: "essay", status: "completed" }));
       dispatch(completeChecklistItem("resume"));
       dispatch(setApplicationProgress({ submitted: "completed" }));
       dispatch(updateProfileCompletion(100));
 
+      toast.success("Application submitted successfully!");
       console.log("✅ Form submitted successfully");
+
+      router.push("/dashboard/applicant");
+
     } catch (err) {
       console.error("❌ Error submitting form:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to submit application. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -185,6 +200,7 @@ const page = () => {
 
   return (
     <>
+      <Toaster />
       {step === 0 && (
         <div className="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 md:px-8">
           <div className="w-full max-w-[704px]">
@@ -574,9 +590,17 @@ const page = () => {
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
+                  className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  disabled={isSubmitting}
                 >
-                  Submit
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <span>Submitting...</span>
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </Card>

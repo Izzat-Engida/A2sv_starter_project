@@ -171,175 +171,179 @@ export default function ReviewerDashboard() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <p>Loading applications...</p>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4F46E5]"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <p className="text-red-500">Error: {error}</p>
+      <div className="min-h-screen p-4 flex flex-col">
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-red-500">Error: {error}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Assigned Applications</h1>
-        <p className="text-muted-foreground mt-2">
-          Showing {applications.length} of {totalCount} applications
-        </p>
-        <div className="flex justify-between items-center mt-4">
-          <div className="flex items-center gap-2">
-            <Button
-              variant={filter === "all" ? "default" : "secondary"}
-              className={
-                filter === "all"
-                  ? "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
-                  : "cursor-pointer"
-              }
-              size="sm"
-              onClick={() => {
-                setFilter("all");
-                setCurrentPage(1);
-              }}
-            >
-              All
-            </Button>
-            <Button
-              variant={filter === "pending-review" ? "default" : "secondary"}
-              className={
-                filter === "pending-review"
-                  ? "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
-                  : "cursor-pointer"
-              }
-              size="sm"
-              onClick={() => {
-                setFilter("pending-review");
-                setCurrentPage(1);
-              }}
-            >
-              Under Review
-            </Button>
-            <Button
-              variant={filter === "accepted" ? "default" : "secondary"}
-              className={
-                filter === "accepted"
-                  ? "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
-                  : "cursor-pointer"
-              }
-              size="sm"
-              onClick={() => {
-                setFilter("accepted");
-                setCurrentPage(1);
-              }}
-            >
-              completed
-            </Button>
+    <div className="min-h-screen flex flex-col">
+      <div className="container mx-auto px-4 py-6 sm:py-8 flex-1">
+        <div className="justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold">Assigned Applications</h1>
+          <p className="text-muted-foreground mt-2">
+            Showing {applications.length} of {totalCount} applications
+          </p>
+          <div className="flex justify-between items-center mt-4">
+            <div className="flex items-center gap-2">
+              <Button
+                variant={filter === "all" ? "default" : "secondary"}
+                className={
+                  filter === "all"
+                    ? "bg-[#4F46E5]  text-white cursor-pointer"
+                    : "cursor-pointer"
+                }
+                size="sm"
+                onClick={() => {
+                  setFilter("all");
+                  setCurrentPage(1);
+                }}
+              >
+                All
+              </Button>
+              <Button
+                variant={filter === "pending-review" ? "default" : "secondary"}
+                className={
+                  filter === "pending-review"
+                    ? "bg-[#4F46E5]  text-white cursor-pointer"
+                    : "cursor-pointer"
+                }
+                size="sm"
+                onClick={() => {
+                  setFilter("pending-review");
+                  setCurrentPage(1);
+                }}
+              >
+                Under Review
+              </Button>
+              <Button
+                variant={filter === "accepted" ? "default" : "secondary"}
+                className={
+                  filter === "accepted"
+                    ? "bg-[#4F46E5]  text-white cursor-pointer"
+                    : "cursor-pointer"
+                }
+                size="sm"
+                onClick={() => {
+                  setFilter("accepted");
+                  setCurrentPage(1);
+                }}
+              >
+                completed
+              </Button>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setSortOrder(sortOrder === "newest" ? "oldest" : "newest");
+                  setCurrentPage(1);
+                }}
+              >
+                Sort by Submission Date {sortOrder === "newest" ? "↓" : "↑"}
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {applications.map((app) => (
+            <Card
+              key={app.application_id}
+              className="p-4 hover:shadow-md transition-shadow"
+            >
+              <div className="justify-between items-center gap-4">
+                <div className="flex items-center gap-4">
+                  <Avatar>{app.applicant_name.charAt(0)}</Avatar>
+                  <div>
+                    <h3 className="font-medium">{app.applicant_name}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Submitted:{" "}
+                      {new Date(app.submission_date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 mt-4">
+                  <Badge
+                    variant={
+                      app.status.toLowerCase() === "accepted"
+                        ? "secondary"
+                        : app.status.toLowerCase().includes("update") ||
+                          app.status.toLowerCase().includes("pending")
+                          ? "outline"
+                          : "default"
+                    }
+                  >
+                    {app.status}
+                  </Badge>
+                </div>
+                <Card className="border-0 shadow-none bg-gray-50 mt-4">
+                  <div>
+                    <Link href={`/dashboard/reviewer/${app.application_id}`}>
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        className="bg-blue-500 text-white hover:bg-[#4F46E5] w-full hover:cursor-pointer"
+                      >
+                        {app.status.toLowerCase() === "accepted"
+                          ? "View"
+                          : app.status.toLowerCase().includes("update")
+                            ? "Update"
+                            : "Review"}
+                      </Button>
+                    </Link>
+                  </div>
+                </Card>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        <div className="flex justify-between items-center mt-8">
+          <div className="text-sm text-muted-foreground">
+            Page {currentPage} of {totalPages}
+          </div>
+          <div className="flex gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
-                setSortOrder(sortOrder === "newest" ? "oldest" : "newest");
-                setCurrentPage(1);
-              }}
+              className="cursor-pointer"
+              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
             >
-              Sort by Submission Date {sortOrder === "newest" ? "↓" : "↑"}
+              &lt;
+            </Button>
+
+            {renderPageNumbers()}
+
+            <Button
+              variant="outline"
+              size="sm"
+              className="cursor-pointer"
+              onClick={() =>
+                handlePageChange(Math.min(totalPages, currentPage + 1))
+              }
+              disabled={currentPage === totalPages}
+            >
+              &gt;
             </Button>
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {applications.map((app) => (
-          <Card
-            key={app.application_id}
-            className="p-4 hover:shadow-md transition-shadow"
-          >
-            <div className="justify-between items-center gap-4">
-              <div className="flex items-center gap-4">
-                <Avatar>{app.applicant_name.charAt(0)}</Avatar>
-                <div>
-                  <h3 className="font-medium">{app.applicant_name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Submitted:{" "}
-                    {new Date(app.submission_date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mt-4">
-                <Badge
-                  variant={
-                    app.status.toLowerCase() === "accepted"
-                      ? "secondary"
-                      : app.status.toLowerCase().includes("update") ||
-                        app.status.toLowerCase().includes("pending")
-                      ? "outline"
-                      : "default"
-                  }
-                >
-                  {app.status}
-                </Badge>
-              </div>
-              <Card className="border-0 shadow-none bg-gray-50 mt-4">
-                <div>
-                  <Link href={`/dashboard/reviewer/${app.application_id}`}>
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      className="bg-blue-500 text-white hover:bg-blue-600 w-full hover:cursor-pointer"
-                    >
-                      {app.status.toLowerCase() === "accepted"
-                        ? "View"
-                        : app.status.toLowerCase().includes("update")
-                        ? "Update"
-                        : "Review"}
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-            </div>
-          </Card>
-        ))}
-      </div>
-
-      <div className="flex justify-between items-center mt-8">
-        <div className="text-sm text-muted-foreground">
-          Page {currentPage} of {totalPages}
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="cursor-pointer"
-            onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-          >
-            &lt;
-          </Button>
-
-          {renderPageNumbers()}
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="cursor-pointer"
-            onClick={() =>
-              handlePageChange(Math.min(totalPages, currentPage + 1))
-            }
-            disabled={currentPage === totalPages}
-          >
-            &gt;
-          </Button>
         </div>
       </div>
     </div>

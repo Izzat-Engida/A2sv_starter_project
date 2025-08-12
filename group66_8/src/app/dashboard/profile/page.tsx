@@ -1,5 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import AdminNav from "@/components/AdminNav";
+import ReviewerNav from "@/components/ReviewerNav";
+import ManagerNav from "@/components/ManagerNav";
+import ApplicantNav from "@/components/ApplicantNav";
+// Helper to get dashboard route by role
+const getDashboardRoute = (role: string) => {
+  switch (role?.toLowerCase()) {
+    case "admin":
+      return "/dashboard/admin";
+    case "reviewer":
+      return "/dashboard/reviewer";
+    case "manager":
+      return "/dashboard/manager";
+    case "applicant":
+      return "/dashboard/applicant/in-progress";
+    default:
+      return "/dashboard/profile";
+  }
+};
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
@@ -215,18 +234,26 @@ function UserProfile() {
             />
             <div className="pb-2">
               <h1 className="text-xl sm:text-2xl font-bold">{data?.data?.full_name || "Unknown"}</h1>
-              <p className="text-sm sm:text-base
-
- text-gray-600">{data?.data?.email || "No email"}</p>
+              <p className="text-sm sm:text-base text-gray-600">{data?.data?.email || "No email"}</p>
             </div>
           </div>
         </div>
-
 
         <div className="pt-20 sm:pt-24 px-4 sm:px-6 pb-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">Personal Information</h2>
           {data?.success && data.data ? (
             <div className="space-y-4 text-base sm:text-lg">
+              {/* Dashboard Button */}
+              <div className="mb-4">
+                <Button
+                  type="button"
+                  className="w-full sm:w-auto bg-[#4F46E5] hover:bg-[#4338CA] text-white"
+                  onClick={() => router.push(getDashboardRoute(data?.data?.role))}
+                >
+                  Go to Dashboard
+                </Button>
+              </div>
+              {/* ...existing code... */}
               <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-4">
                 {profileFormError && (
                   <div className="text-red-500 text-sm mb-2">{profileFormError}</div>
@@ -273,7 +300,6 @@ function UserProfile() {
                   {isProfileLoading ? "Saving..." : "Save Changes"}
                 </Button>
               </form>
-
 
               <div className="mt-6 flex flex-col">
                 <h3 className="text-lg font-semibold mb-2">Change Password</h3>

@@ -14,12 +14,13 @@ import Check from "./icons/Check";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/redux/store";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const page = () => {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const userName = "John";
+  const userName = session?.user?.name || "Applicant";
   const profileCompletion = useSelector(
     (state: RootState) => state.application.profileCompletion
   );
@@ -85,7 +86,7 @@ const page = () => {
                 </div>
                 <CardFooter className="p-0">
                   <div className="flex items-center font-semibold ">
-                    <Link href="/dashboard/profile">Go to profile</Link>
+                    Go to profile
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
