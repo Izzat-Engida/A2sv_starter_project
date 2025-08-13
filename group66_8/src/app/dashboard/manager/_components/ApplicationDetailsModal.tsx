@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 interface ApplicantDetails {
   id: string;
